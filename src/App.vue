@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <main-table :rows="rows" :cols="cols"/>
+    <main-table
+      :headers="headers"
+      :items="items"
+    />
   </div>
 </template>
 
@@ -93,7 +96,26 @@ export default {
         fullName: '', name: '', titleRow: '', number: '24',
       },
     ],
+    headers: [
+      { value: 'title' },
+    ],
+    items: [
+      { title: 'Наименование' },
+      { title: 'Название' },
+      { title: 'Заголовок строки' },
+      { title: 'Порядковый номер' },
+    ],
   }),
+  created() {
+    for (let i = 1; i < 25; i += 1) {
+      this.headers.push({
+        text: `${i} ч.`,
+        value: i,
+      });
+      // eslint-disable-next-line no-return-assign,no-param-reassign
+      this.items.forEach((item) => { item[i] = ''; });
+    }
+  },
 };
 </script>
 

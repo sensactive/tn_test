@@ -31,13 +31,16 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/essential",
+      "plugin:vue/recommended",
       "@vue/airbnb"
     ],
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "vue/require-v-for-key": "off",
+      "vue/valid-v-for": "off"
+    }
   },
   "browserslist": [
     "> 1%",

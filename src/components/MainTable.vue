@@ -1,63 +1,96 @@
 <template>
   <div class="table-sc">
-    <div class="table__header"></div>
-    <div class="table__rows">
-      <div class="table__rows__first-col">
-        <div
-          v-for="(row, index) in rows"
-          :key="index + 'title'"
-          class="table__rows__first-col__cell"
-        >
-          {{ row.text }}
-        </div>
-      </div>
-      <div class="table__rows__content" ref="content">
-        <div v-for="(col, colIdx) in cols" :key="colIdx" class="table__rows__content-row">
-          <div
-            v-for="(row, rowIdx) in rows"
-            :key="rowIdx + 'cell'"
-            class="table__rows__content-row__cell"
-          >
-          <!--            <input type="text">-->
-            {{ col[row.value] }}
-          </div>
-        </div>
-      </div>
+    <div
+      v-for="header in headers"
+      :key="header.value"
+      class="table-header"
+    >
+      {{ header.text }}
     </div>
-    <div></div>
+    <template v-for="(item) in items">
+      <div
+        v-for="header in headers"
+        class="table-cell"
+        :class="header.value === 'title' ? 'table-cell_first-col' : ''"
+      >
+        <slot
+          :name="`item.${header.value}`"
+          :item="item"
+        >
+          <div
+            v-if="header.value === 'title'"
+          >
+            {{ item[header.value] }}
+          </div>
+          <label v-else>
+            <input
+              type="number"
+              :placeholder="item[header.value]"
+              max="999999"
+            >
+          </label>
+        </slot>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
 export default {
   name: 'MainTable',
-  computed: {
-  },
   props: {
-    rows: { type: Array, default: () => [] },
-    cols: { type: Array, default: () => [] },
+    headers: { type: Array, default: () => [] },
+    items: { type: Array, default: () => [] },
   },
   mounted() {
-    this.$refs.content.style.gridTemplateColumns = `repeat(${this.cols.length}, max-content)`;
+    const el = document.querySelector('.table-sc');
+    if (el) {
+      el.style.gridTemplateColumns = `repeat(${this.headers.length}, minmax(10vw, max-content))`;
+    }
+    const allInputs = document.querySelectorAll('input[type="number"]');
+    allInputs.forEach((input) => {
+      // eslint-disable-next-line no-param-reassign,func-names
+      input.oninput = function () {
+        if (this.value.length > 6) { this.value = this.value.slice(0, 6); }
+      };
+    });
   },
 };
 </script>
 
 <style lang="scss">
-  .table {
-    &-sc {
-      width: 1000px;
-      height: 500px;
-    }
-    &__rows {
-      display: grid;
-      grid-template-columns: 10vw max-content;
-      width: inherit;
-      &__content {
-        display: grid;
-        overflow: auto;
-        width: inherit;
+  .table-sc {
+    width: 1000px;
+    height: 500px;
+    display: grid;
+    border: 1px solid rgba(0,0,0,.2);
+    overflow: auto;
+    .table {
+      &-header {
+        position: sticky;
+        top: 0;
+        background: #e2e2e2;
       }
+      &-cell {
+        padding: 0;
+        input[type="number"] {
+          padding: 0;
+          margin: 0;
+          max-width: 100%;
+          min-height: 100%;
+          box-sizing: border-box;
+          font-size: 2vw;
+        }
+        &_first-col {
+          background: #e2e2e2;
+          position: sticky;
+          left: 0;
+        }
+      }
+    }
+    & > div {
+      text-align: center;
+      border: 1px solid rgba(0,0,0,.2);
     }
   }
 </style>
