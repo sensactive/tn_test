@@ -4,6 +4,7 @@
       v-for="header in headers"
       :key="header.value"
       class="table-header"
+      :class="header.value === 'title' ? 'table-cell_first-col' : ''"
     >
       {{ header.text }}
     </div>
@@ -26,7 +27,6 @@
             <input
               type="number"
               :placeholder="item[header.value]"
-              max="999999"
             >
           </label>
         </slot>
@@ -65,6 +65,7 @@ export default {
     display: grid;
     border: 1px solid rgba(0,0,0,.2);
     overflow: auto;
+    grid-template-rows: repeat(auto-fit, minmax(1vw, max-content));
     .table {
       &-header {
         position: sticky;
@@ -72,14 +73,12 @@ export default {
         background: #e2e2e2;
       }
       &-cell {
-        padding: 0;
         input[type="number"] {
           padding: 0;
           margin: 0;
-          max-width: 100%;
-          min-height: 100%;
+          width: 100%;
+          height: 100%;
           box-sizing: border-box;
-          font-size: 2vw;
         }
         &_first-col {
           background: #e2e2e2;
