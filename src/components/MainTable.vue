@@ -23,12 +23,10 @@
           >
             {{ item[header.value] }}
           </div>
-          <label v-else>
-            <input
-              type="number"
-              :placeholder="item[header.value]"
-            >
-          </label>
+          <component
+            :is="header.contentCellType"
+            v-else
+          />
         </slot>
       </div>
     </template>
@@ -38,6 +36,9 @@
 <script>
 export default {
   name: 'MainTable',
+  components: {
+    InputCell: () => import('@/components/table_cells/InputCell.vue'),
+  },
   props: {
     headers: { type: Array, default: () => [] },
     items: { type: Array, default: () => [] },
@@ -47,13 +48,6 @@ export default {
     if (el) {
       el.style.gridTemplateColumns = `repeat(${this.headers.length}, minmax(10vw, max-content))`;
     }
-    const allInputs = document.querySelectorAll('input[type="number"]');
-    allInputs.forEach((input) => {
-      // eslint-disable-next-line no-param-reassign,func-names
-      input.oninput = function () {
-        if (this.value.length > 6) { this.value = this.value.slice(0, 6); }
-      };
-    });
   },
 };
 </script>
@@ -82,13 +76,6 @@ export default {
         z-index: 10;
       }
       &-cell {
-        input[type="number"] {
-          padding: 0;
-          margin: 0;
-          width: 100%;
-          height: 100%;
-          box-sizing: border-box;
-        }
       }
     }
     & > div {

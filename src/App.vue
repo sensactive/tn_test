@@ -111,6 +111,7 @@ export default {
       this.headers.push({
         text: `${i} ч.`,
         value: i,
+        contentCellType: 'input-cell',
       });
       // eslint-disable-next-line no-return-assign,no-param-reassign
       this.items.forEach((item) => { item[i] = ''; });
