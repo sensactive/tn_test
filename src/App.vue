@@ -4,7 +4,7 @@
       <div
         v-for="(page, index) in pages"
         :key="index"
-        class="navigation__button"
+        class="navigation__button elevation"
         :class="currentPageIdx === index ? 'active' : ''"
         @click="currentPageIdx = index"
       >
@@ -52,9 +52,13 @@ export default {
       align-items: center;
       margin-bottom: 2vw;
       text-transform: uppercase;
+      user-select: none;
       &:hover { opacity: .7; }
     }
     .active { background: gray; }
+  }
+  .elevation {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   }
 }
 </style>

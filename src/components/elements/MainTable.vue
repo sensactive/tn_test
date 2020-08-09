@@ -1,5 +1,5 @@
 <template>
-  <div class="table-sc">
+  <div class="table-sc elevation">
     <div
       v-for="header in headers"
       :key="header.value"
