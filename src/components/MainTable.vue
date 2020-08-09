@@ -4,7 +4,7 @@
       v-for="header in headers"
       :key="header.value"
       class="table-header"
-      :class="header.value === 'title' ? 'table-cell_first-col' : ''"
+      :class="header.value === 'title' ? 'first-col' : ''"
     >
       {{ header.text }}
     </div>
@@ -12,7 +12,7 @@
       <div
         v-for="header in headers"
         class="table-cell"
-        :class="header.value === 'title' ? 'table-cell_first-col' : ''"
+        :class="header.value === 'title' ? 'first-col' : ''"
       >
         <slot
           :name="`item.${header.value}`"
@@ -60,17 +60,26 @@ export default {
 
 <style lang="scss">
   .table-sc {
+    box-sizing: border-box;
     width: 1000px;
     height: 500px;
     display: grid;
     border: 1px solid rgba(0,0,0,.2);
     overflow: auto;
     grid-template-rows: repeat(auto-fit, minmax(1vw, max-content));
+    .first-col {
+      background: #e2e2e2;
+      position: sticky;
+      left: 0;
+      z-index: 10;
+    }
     .table {
+      &-header.first-col { z-index: 12; }
       &-header {
         position: sticky;
         top: 0;
         background: #e2e2e2;
+        z-index: 10;
       }
       &-cell {
         input[type="number"] {
@@ -79,11 +88,6 @@ export default {
           width: 100%;
           height: 100%;
           box-sizing: border-box;
-        }
-        &_first-col {
-          background: #e2e2e2;
-          position: sticky;
-          left: 0;
         }
       }
     }
