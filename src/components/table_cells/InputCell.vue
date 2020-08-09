@@ -1,11 +1,13 @@
 <template>
-  <label>
-    <input
-      ref="myInput"
-      v-model="model"
-      :type="type"
-    >
-  </label>
+  <div class="input-cell-sc">
+    <label>
+      <input
+        ref="myInput"
+        v-model="model"
+        :type="type"
+      >
+    </label>
+  </div>
 </template>
 
 <script>

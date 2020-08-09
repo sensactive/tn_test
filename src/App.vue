@@ -1,126 +1,60 @@
 <template>
   <div id="app">
-    <main-table
-      :headers="headers"
-      :items="items"
-    />
+    <div class="navigation">
+      <div
+        v-for="(page, index) in pages"
+        :key="index"
+        class="navigation__button"
+        :class="currentPageIdx === index ? 'active' : ''"
+        @click="currentPageIdx = index"
+      >
+        {{ page.text }}
+      </div>
+    </div>
+    <component :is="pages[currentPageIdx].value" />
   </div>
 </template>
 
 <script>
-import MainTable from '@/components/MainTable.vue';
 
 export default {
   name: 'App',
   components: {
-    MainTable,
+    FirstPage: () => import('@/components/pages/First.vue'),
+    SecondPage: () => import('@/components/pages/Second.vue'),
   },
   data: () => ({
-    rows: [
-      { text: 'Наименование', value: 'fullName' },
-      { text: 'Название', value: 'name' },
-      { text: 'Заголовок строки', value: 'titleRow' },
-      { text: 'Порядковый номер', value: 'number' },
-    ],
-    cols: [
-      {
-        fullName: '', name: '', titleRow: '', number: '1',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '2',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '3',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '4',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '5',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '6',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '7',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '8',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '9',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '10',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '11',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '12',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '13',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '14',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '15',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '16',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '17',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '18',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '19',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '20',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '21',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '22',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '23',
-      },
-      {
-        fullName: '', name: '', titleRow: '', number: '24',
-      },
-    ],
-    headers: [
-      { value: 'title' },
-    ],
-    items: [
-      { title: 'Наименование' },
-      { title: 'Название' },
-      { title: 'Заголовок строки' },
-      { title: 'Порядковый номер' },
+    currentPageIdx: 0,
+    pages: [
+      { text: 'Первая страница', value: 'first-page' },
+      { text: 'Вторая страница', value: 'second-page' },
     ],
   }),
-  created() {
-    for (let i = 1; i < 25; i += 1) {
-      this.headers.push({
-        text: `${i} ч.`,
-        value: i,
-        contentCellType: 'input-cell',
-      });
-      // eslint-disable-next-line no-return-assign,no-param-reassign
-      this.items.forEach((item) => { item[i] = ''; });
-    }
-  },
 };
 </script>
 
 <style lang="scss">
 #app {
+  .navigation {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(5vw, min-content));
+    grid-gap: 1vw;
+    &__button {
+      min-width: 5vw;
+      min-height: 3vw;
+      display: flex;
+      padding: 1vw;
+      white-space: nowrap;
+      background: #3b3bf1;
+      cursor: pointer;
+      border-radius: 10px;
+      color: #e2e2e2;
+      align-items: center;
+      margin-bottom: 2vw;
+      text-transform: uppercase;
+      &:hover { opacity: .7; }
+    }
+    .active { background: gray; }
+  }
 }
 </style>

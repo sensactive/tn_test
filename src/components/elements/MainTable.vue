@@ -38,6 +38,7 @@ export default {
   name: 'MainTable',
   components: {
     InputCell: () => import('@/components/table_cells/InputCell.vue'),
+    IconCell: () => import('@/components/table_cells/Icon.vue'),
   },
   props: {
     headers: { type: Array, default: () => [] },
@@ -46,7 +47,7 @@ export default {
   mounted() {
     const el = document.querySelector('.table-sc');
     if (el) {
-      el.style.gridTemplateColumns = `repeat(${this.headers.length}, minmax(10vw, max-content))`;
+      el.style.gridTemplateColumns = `repeat(${this.headers.length}, max-content)`;
     }
   },
 };
@@ -60,7 +61,7 @@ export default {
     display: grid;
     border: 1px solid rgba(0,0,0,.2);
     overflow: auto;
-    grid-template-rows: repeat(auto-fit, minmax(1vw, max-content));
+    grid-template-rows: repeat(auto-fit, minmax(1px, max-content));
     .first-col {
       background: #e2e2e2;
       position: sticky;
