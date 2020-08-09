@@ -15,8 +15,47 @@ export default {
       { value: 'title' },
     ],
     items: [
-      { title: 'Наименование' },
-      { title: 'Название' },
+      {
+        title: 'Наименование',
+        children: [
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+        ],
+      },
+      {
+        title: 'Название',
+        children: [
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+          { title: '' },
+        ],
+      },
       { title: 'Заголовок строки' },
       { title: 'Порядковый номер' },
     ],
@@ -28,8 +67,10 @@ export default {
         value: i,
         contentCellType: 'input-cell',
       });
-      // eslint-disable-next-line no-return-assign,no-param-reassign
-      this.items.forEach((item) => { item[i] = ''; });
+      this.items.map((item) => {
+        if (item.children) item.children.map((child) => child[i] = '');
+        return item[i] = '';
+      });
     }
   },
 };

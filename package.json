@@ -39,7 +39,9 @@
     },
     "rules": {
       "vue/require-v-for-key": "off",
-      "vue/valid-v-for": "off"
+      "vue/valid-v-for": "off",
+      "no-param-reassign": ["error", { "props": false }],
+      "no-return-assign": "off"
     }
   },
   "browserslist": [
