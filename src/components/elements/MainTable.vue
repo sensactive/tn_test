@@ -1,5 +1,5 @@
 <template>
-  <div class="table-sc elevation">
+  <div class="table-sc elevation pull-down">
     <div
       v-for="header in headers"
       :key="header.value"
@@ -20,9 +20,13 @@
         >
           <div
             v-if="header.value === 'title'"
-            @click="openNeededChildren($event, itemIdx)"
+            class="first-col__content"
+            @click="openCloseNeededChildren($event, itemIdx)"
           >
             {{ item[header.value] }}
+            <span v-if="item.children">
+              {{ !needToShowChildren(itemIdx) ? '▼' : '▲' }}
+            </span>
           </div>
           <component
             :is="header.contentCellType"
@@ -30,14 +34,18 @@
           />
         </slot>
       </div>
-      <template v-if="item.children && showingChildrenIdxs.indexOf(itemIdx) !== -1">
+      <template
+        v-if="needToShowChildren(itemIdx)"
+      >
         <template
           v-for="child in item.children"
         >
           <div
             v-for="(header, headerIdx) in headers"
-            class="table-cell"
-            :class="headerIdx === 0 ? 'first-col' : ''"
+            class="table-cell children pull-down"
+            :class="{
+              'first-col': headerIdx === 0,
+            }"
           >
             <slot
               :name="`item.child.${header.value}`"
@@ -81,10 +89,13 @@ export default {
     }
   },
   methods: {
-    openNeededChildren(e, childrenIdx) {
+    openCloseNeededChildren(e, childrenIdx) {
       const idx = this.showingChildrenIdxs.indexOf(childrenIdx);
       if (idx !== -1) this.showingChildrenIdxs.splice(idx, 1);
       else this.showingChildrenIdxs.push(childrenIdx);
+    },
+    needToShowChildren(childrenIdx) {
+      return this.showingChildrenIdxs.indexOf(childrenIdx) !== -1;
     },
   },
 };
@@ -98,12 +109,24 @@ export default {
     display: grid;
     border: 1px solid rgba(0,0,0,.2);
     overflow: auto;
-    grid-template-rows: repeat(auto-fit, minmax(30px, max-content));
+    grid-template-rows: repeat(auto-fit, minmax(47px, max-content));
     .first-col {
+      display: flex;
       background: #e2e2e2;
       position: sticky;
       left: 0;
       z-index: 10;
+      &.children {
+        background: #f8efff;
+      }
+      &__content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 5px;
+        span { cursor: pointer; }
+      }
     }
     .table {
       &-header.first-col { z-index: 12; }
@@ -113,12 +136,28 @@ export default {
         background: #e2e2e2;
         z-index: 10;
       }
-      &-cell {
-      }
     }
     & > div {
       text-align: center;
       border: 1px solid rgba(0,0,0,.2);
+    }
+    .pull-down{ animation: pull-down .3s ease-in-out; transform-origin: 50% 0;}
+    @keyframes pull-down {
+      0% {
+        transform: scaleY(0.1);
+      }
+      100% {
+        transform: scaleY(1);
+      }
+    }
+
+    @-webkit-keyframes pull-down {
+      0% {
+        -webkit-transform: scaleY(0.1);
+      }
+      100% {
+        -webkit-transform: scaleY(1);
+      }
     }
   }
 </style>

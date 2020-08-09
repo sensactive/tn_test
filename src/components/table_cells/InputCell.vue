@@ -34,7 +34,7 @@ export default {
 <style lang="scss">
   input[type="number"] {
     width: 100%;
-    height: 100%;
+    height: 47px;
     box-sizing: border-box;
   }
 </style>
